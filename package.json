@@ -1,0 +1,24 @@
+{
+  "name": "lambda-backend",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1196.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.10.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.142",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^20.2.0",
+    "@types/pg": "^8.6.0",
+    "typescript": "^5.1.6"
+  }
+}
