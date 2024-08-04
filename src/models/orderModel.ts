@@ -1,22 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
-export class User {
+export class Order {
   @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column({ unique: true })
-  username!: string;
-
-  @Column({ unique: true })
-  email!: string;
+    id!: number;
 
   @Column()
-  password!: string;
+    product!: string;
+
+  @Column('decimal')
+    amount!: number;
+
+  @Column()
+    userId!: number;
 
   @CreateDateColumn()
-  createdAt!: Date;
+    createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt!: Date;
+    updatedAt!: Date;
 }

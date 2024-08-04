@@ -4,13 +4,16 @@
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./src",
+    "baseUrl": "./src",               // Configura baseUrl aquí
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node", "aws-lambda"]  // Incluye los tipos necesarios
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "types": ["node", "aws-lambda"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
-

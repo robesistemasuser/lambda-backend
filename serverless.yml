@@ -1,0 +1,130 @@
+service: backend-service
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    POSTGRES_MASTER_URL: ${ssm:/my-service/POSTGRES_MASTER_URL}
+    POSTGRES_REPLICA_URL: ${ssm:/my-service/POSTGRES_REPLICA_URL}
+    MONGO_URI: ${ssm:/my-service/MONGO_URI}
+    REDIS_URL: ${ssm:/my-service/REDIS_URL}
+    JWT_SECRET: ${ssm:/my-service/JWT_SECRET}
+
+functions:
+  register:
+    handler: src/handlers/authHandler.register
+    events:
+      - http:
+          path: register
+          method: post
+          cors: true
+
+  login:
+    handler: src/handlers/authHandler.login
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+
+  createUser:
+    handler: src/handlers/userHandler.createUser
+    events:
+      - http:
+          path: user
+          method: post
+          cors: true
+
+  getUser:
+    handler: src/handlers/userHandler.getUser
+    events:
+      - http:
+          path: user/{id}
+          method: get
+          cors: true
+
+  getAllUsers:
+    handler: src/handlers/userHandler.getAllUsers
+    events:
+      - http:
+          path: users
+          method: get
+          cors: true
+
+  createOrder:
+    handler: src/handlers/orderHandler.createOrder
+    events:
+      - http:
+          path: order
+          method: post
+          cors: true
+
+  getOrder:
+    handler: src/handlers/orderHandler.getOrder
+    events:
+      - http:
+          path: order/{id}
+          method: get
+          cors: true
+
+  getAllOrders:
+    handler: src/handlers/orderHandler.getAllOrders
+    events:
+      - http:
+          path: orders
+          method: get
+          cors: true
+
+  createLog:
+    handler: src/handlers/logHandler.createLog
+    events:
+      - http:
+          path: log
+          method: post
+          cors: true
+
+  getLogs:
+    handler: src/handlers/logHandler.getLogs
+    events:
+      - http:
+          path: logs
+          method: get
+          cors: true
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+# You can specify custom IAM roles for your functions
+# here is an example of a custom role with SSM read access
+resources:
+  Resources:
+    LambdaExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: lambda-execution-role
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
+        Policies:
+          - PolicyName: ssm-read-access
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - ssm:GetParameter
+                  Resource: "*"
+        Path: "/"
+
+# Optional: Define Lambda layers
+layers:
+  commonDependencies:
+    path: layer/common
